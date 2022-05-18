@@ -259,8 +259,12 @@ def filterMissingReports(jacocoFileList, failIfMissing=False) :
     for f in jacocoFileList :
         f = f.strip()
         exists = os.path.exists(f)
+        pathExists = pathlib.Path(f)
+        
         print ("::set-output name=fileList::" + str(f))
-        print("::set-output name=exists::" + str(exists))
+        print("::set-output name=os.path.exists::" + str(exists))
+        print("::set-output name=pathlib.Path::" + str(pathExists))
+        
         if pathlib.Path(f) :
             goodReports.append(f)
         else :
