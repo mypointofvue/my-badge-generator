@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # jacoco-badge-generator
 
 [<img alt="cicirello/jacoco-badge-generator - Coverage badges, and pull request coverage checks, from JaCoCo reports in GitHub Actions" 
@@ -980,3 +981,6 @@ You can support the project in a number of ways:
 
 This GitHub action is released under
 the [MIT License](https://github.com/cicirello/jacoco-badge-generator/blob/main/LICENSE).
+=======
+# my-badge-generator
+>>>>>>> 8fdfeb5af26ab397dfaf6357bac20b064e5b8f56
