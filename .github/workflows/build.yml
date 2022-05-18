@@ -1,0 +1,131 @@
+name: build
+
+on:
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+
+    - name: Run Python unit tests
+      run: python3 -u -m unittest tests/tests.py
+
+    - name: Verify that the Docker image for the action builds
+      run: docker build . --file Dockerfile
+
+    - name: Integration test with a single jacoco.csv
+      id: integration1
+      uses: ./
+      with:
+        jacoco-csv-file: tests/jacoco.csv
+        badges-directory: tests/badges
+        generate-branches-badge: true
+
+    - name: Log integration test outputs with a single jacoco.csv
+      run: |
+        echo "coverage = ${{ steps.integration1.outputs.coverage }}"
+        echo "branch coverage = ${{ steps.integration1.outputs.branches }}"
+
+    - name: Integration test with multiple jacoco.csv files
+      id: integration2
+      uses: ./
+      with:
+        jacoco-csv-file: >
+          tests/multi1.csv
+          tests/multi2.csv
+        badges-directory: tests/badges
+        generate-branches-badge: true
+        coverage-badge-filename: coverageMulti.svg
+        branches-badge-filename: branchesMulti.svg
+
+    - name: Log integration test outputs with multiple jacoco.csv files
+      run: |
+        echo "coverage = ${{ steps.integration2.outputs.coverage }}"
+        echo "branch coverage = ${{ steps.integration2.outputs.branches }}"
+
+    - name: Integration endpoints test 
+      id: integration3
+      uses: ./
+      with:
+        jacoco-csv-file: tests/jacoco.csv
+        badges-directory: tests/endpoints
+        generate-coverage-badge: false
+        generate-branches-badge: false
+        generate-coverage-endpoint: true
+        generate-branches-endpoint: true
+
+    - name: Log integration endpoints test outputs
+      run: |
+        echo "coverage = ${{ steps.integration3.outputs.coverage }}"
+        echo "branch coverage = ${{ steps.integration3.outputs.branches }}"
+
+    - name: Integration test for summary report 
+      id: integration4
+      uses: ./
+      with:
+        jacoco-csv-file: tests/summaryReportTest.csv
+        badges-directory: tests/summary
+        generate-coverage-badge: false
+        generate-branches-badge: false
+        generate-coverage-endpoint: false
+        generate-branches-endpoint: false
+        generate-summary: true
+
+    - name: Log integration summary report test outputs
+      run: |
+        echo "coverage = ${{ steps.integration4.outputs.coverage }}"
+        echo "branch coverage = ${{ steps.integration4.outputs.branches }}"
+
+    - name: Integration test with custom labels
+      id: integration5
+      uses: ./
+      with:
+        jacoco-csv-file: tests/jacoco.csv
+        badges-directory: tests/badges
+        generate-branches-badge: true
+        generate-coverage-endpoint: true
+        generate-branches-endpoint: true
+        coverage-badge-filename: customCoverage.svg
+        branches-badge-filename: customBranches.svg
+        coverage-endpoint-filename: customCoverage.json
+        branches-endpoint-filename: customBranches.json
+        coverage-label: custom coverage label one
+        branches-label: custom coverage label two
+
+    - name: Log integration test outputs with a single jacoco.csv
+      run: |
+        echo "coverage = ${{ steps.integration5.outputs.coverage }}"
+        echo "branch coverage = ${{ steps.integration5.outputs.branches }}"
+
+    - name: Verify integration test results
+      run: python3 -u -m unittest tests/integration.py
+
+    # This test can be used to test failing the workflow run on decrease.
+    # Uncomment to use. Success is if this fails the workflow.
+    # - name: Integration test for fail on decrease 
+      # id: integrationFailures
+      # uses: ./
+      # with:
+        # jacoco-csv-file: tests/summaryReportTest.csv
+        # badges-directory: tests
+        # generate-coverage-badge: false
+        # generate-branches-badge: false
+        # generate-coverage-endpoint: false
+        # generate-branches-endpoint: false
+        # generate-summary: true
+        # summary-filename: reportTestFail.json
+        # fail-on-coverage-decrease: true
+        # fail-on-branches-decrease: true
