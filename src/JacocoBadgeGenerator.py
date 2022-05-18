@@ -255,11 +255,11 @@ def filterMissingReports(jacocoFileList, failIfMissing=False) :
     don't exist, then it will exit with a non-zero exit code causing
     workflow to fail.
     """
-    print ("jacocoFileList" + jacocoFileList)
+    print ("::set-output name=jacocoFileList::" + str(jacocoFileList))
     goodReports = []
     for f in jacocoFileList :
         f = f.strip()
-        print("os path function result:" + os.path.exists(f))
+        print("::set-output name=ospath::" + str(os.path.exists(f)))
         if os.path.exists(f) :
             goodReports.append(f)
         else :
@@ -563,6 +563,7 @@ if __name__ == "__main__" :
 
         print("::set-output name=coverage::" + str(cov))
         print("::set-output name=branches::" + str(branches))
+
     
 
 
