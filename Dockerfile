@@ -2,6 +2,6 @@
 # https://www.cicirello.org/
 # Licensed under the MIT License
 #FROM ghcr.io/cicirello/pyaction:4.4.0
-FROM python:alpine3.15
+FROM python:latest
 COPY src /
 ENTRYPOINT ["/JacocoBadgeGenerator.py"]
