@@ -122,6 +122,8 @@ def computeCoverage(fileList) :
     missedBranches = 0
     coveredBranches = 0
     for filename in fileList :
+        filename = filename.strip()
+        print("filename: " + filename)
         with open(filename, newline='') as csvfile :
             jacocoReader = csv.reader(csvfile)
             for i, row in enumerate(jacocoReader) :
@@ -264,7 +266,7 @@ def filterMissingReports(jacocoFileList, failIfMissing=False) :
         print ("::set-output name=fileList::" + str(f))
         print("::set-output name=os.path.exists::" + str(exists))
         print("::set-output name=pathlib.Path::" + str(pathExists))
-        
+
         if pathlib.Path(f) :
             goodReports.append(f)
         else :
