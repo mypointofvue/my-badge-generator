@@ -1,4 +1,6 @@
-#!/usr/bin/env -S python3 -B
+#!/usr/bin/env python3
+#
+# -S python3 -B
 #
 # jacoco-badge-generator: Coverage badges, and pull request coverage checks,
 # from JaCoCo reports in GitHub Actions.
@@ -262,7 +264,7 @@ def filterMissingReports(jacocoFileList, failIfMissing=False) :
         f = f.strip()
         exists = os.path.exists(f)
         filePath = pathlib.Path(f)
-        
+
         print ("::set-output name=fileList::" + str(f))
         print("::set-output name=os.path.exists::" + str(exists))
         print("::set-output name=filePath::" + str(filePath))
