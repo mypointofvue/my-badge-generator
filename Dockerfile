@@ -3,5 +3,6 @@
 # Licensed under the MIT License
 #FROM ghcr.io/cicirello/pyaction:4.4.0
 FROM python:latest
+RUN export PYTHONDONTWRITEBYTECODE=1
 COPY src /
 ENTRYPOINT ["/JacocoBadgeGenerator.py"]
