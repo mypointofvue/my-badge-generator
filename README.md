@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # jacoco-badge-generator
 
 [<img alt="cicirello/jacoco-badge-generator - Coverage badges, and pull request coverage checks, from JaCoCo reports in GitHub Actions" 
